@@ -1,4 +1,4 @@
-% load arithmetic
+% load arithmetic and tools for working with finite domains
 :- use_module(library(clpfd)).
 
 not_threatened_on_row([Queen1Row, _Queen1Col], [Queen2Row, _Queen2Col]) :- Queen1Row #\= Queen2Row.
