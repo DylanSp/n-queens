@@ -5,11 +5,7 @@ not_threatened_on_row([Queen1Row, _Queen1Col], [Queen2Row, _Queen2Col]) :- Queen
 
 not_threatened_on_col([_Queen1Row, Queen1Col], [_Queen2Row, Queen2Col]) :- Queen1Col #\= Queen2Col.
 
-% not_threatened_on_diag([Queen1Row, Queen1Col], [Queen2Row, Queen2Col]) :- abs(Queen1Row - Queen2Row) #\= abs(Queen1Col - Queen2Col).
-not_threatened_on_diag([Queen1Row, Queen1Col], [Queen2Row, Queen2Col]) :-
-  (Queen1Row - Queen2Row) #\= (Queen1Col - Queen2Col),
-  (Queen1Row - Queen2Row) #\= (-1 * (Queen1Col - Queen2Col)).
-
+not_threatened_on_diag([Queen1Row, Queen1Col], [Queen2Row, Queen2Col]) :- abs(Queen1Row - Queen2Row) #\= abs(Queen1Col - Queen2Col).
 
 not_threatened(Queen1, Queen2) :-
   not_threatened_on_row(Queen1, Queen2),
@@ -32,6 +28,6 @@ queen_valid_for_solution(N, [QueenRow, QueenCol]) :-
 solution(N, Queens) :-
   length(Queens, N),
   is_set(Queens),
-  maplist(queen_valid_for_solution(N), Queens),
+  maplist(queen_valid_for_solution(N), Queens), % make sure all queen values are valid for size N
   no_queens_threaten(Queens),
   maplist(label, Queens). % "ground" our solution in actual values.
