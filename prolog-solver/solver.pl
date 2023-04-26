@@ -27,9 +27,22 @@ queen_valid_for_solution(N, QueenRow-QueenCol) :-
 
 label_queen(QueenRow-QueenCol) :- label([QueenRow, QueenCol]).
 
-solution(N, Queens) :-
+solution(N, SortedQueens) :-
   length(Queens, N),
   is_set(Queens),
   maplist(queen_valid_for_solution(N), Queens), % make sure all queen values are valid for size N
   no_queens_threaten(Queens),
-  maplist(label_queen, Queens). % "ground" our solution in actual values.
+  maplist(label_queen, Queens), % "ground" our solution in actual values.
+  sort(Queens, SortedQueens).
+
+solutions_without_duplicates(N, SolutionsList) :- setof(RawSolutions, solution(N, RawSolutions), SolutionsList).
+
+% "all" column in https://en.wikipedia.org/wiki/Eight_queens_puzzle#Counting_solutions_for_other_sizes_n
+% counts reflections/rotations
+count_all_solutions(N, Count) :-
+  solutions_without_duplicates(N, SolutionsList),
+  length(SolutionsList, Count).
+
+fundamental_solutions(N, FundamentalSolutions) :-
+  solutions_without_duplicates(N, DeduplicatedSolutions).
+  % TODO - eliminate reflections/rotations
